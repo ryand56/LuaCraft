@@ -81,3 +81,4 @@ bin/
 *.save
 dependency-reduced-pom.xml
 /*.bat
+**/DummyScript.lua
