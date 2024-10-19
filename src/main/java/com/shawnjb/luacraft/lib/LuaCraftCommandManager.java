@@ -45,7 +45,8 @@ public class LuaCraftCommandManager implements Listener {
 			LuaValue tabCompleteFunction = args.optfunction(3, null);
 			String description = args.optjstring(4, "");
 			String usage = args.optjstring(5, "/"+commandName);
-			List<String> aliases = ((List<?>) LuaValueConverter.toJava(args.opttable(6, LuaTable.tableOf())))
+			String permission = args.optjstring(6, null);
+			List<String> aliases = ((List<?>) LuaValueConverter.toJava(args.opttable(7, LuaTable.tableOf())))
 				.stream().map(Object::toString).toList();
 			if (commandList.containsKey(commandName)) {
 				Command command = commandList.get(commandName).getRight();
@@ -89,6 +90,7 @@ public class LuaCraftCommandManager implements Listener {
 					}
 				}
 			};
+			command.setPermission(permission);
 			Pair<LuaValue, Command> pair = Pair.of(function, command);
 			Bukkit.getCommandMap().register(commandPrefix, command);
 			commandList.put(commandName, pair);
