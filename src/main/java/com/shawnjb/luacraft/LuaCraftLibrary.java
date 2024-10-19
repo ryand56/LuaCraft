@@ -81,6 +81,10 @@ public class LuaCraftLibrary {
 		LuaCraftEventHandler eventHandler = new LuaCraftEventHandler(plugin);
 		globals.set("EventHandler", eventHandler.create());
 
+		// Command manager
+		LuaCraftCommandManager commandManager = new LuaCraftCommandManager(plugin);
+		globals.set("CommandManager", commandManager.create());
+
 		// Loadstring
 		LoadStringFunction.register(globals);
 	}
