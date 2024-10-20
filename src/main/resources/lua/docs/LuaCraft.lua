@@ -288,3 +288,51 @@ function LuaCraft.convertAmpersandToSection(text) end
 --- LuaCraft.broadcastMessage("Hello, everyone! This message is from the server!")
 --- ```
 function LuaCraft.broadcastMessage(message) end
+
+--- Finds the highest safe Y-level at the specified x, z coordinates, where the block at that Y-level is solid and the block above it is air.
+--- @param position table A table containing `x`, `y`, and `z` coordinates. The `y` value is ignored during the search.
+--- @return number|nil The highest safe Y-level if found, or `nil` if no safe location exists.
+--- ```lua
+--- local safeY = LuaCraft.findSafeYLevel({ x = 100, y = 64, z = 200 })
+--- if safeY then
+---     print("Safe Y level found at: " .. safeY)
+--- else
+---     print("No safe Y level found.")
+--- end
+--- ```
+function LuaCraft.findSafeYLevel(position) end
+
+--- Checks if the block at the specified location is submerged in water or lava.
+--- @param position table A table containing `x`, `y`, and `z` coordinates.
+--- @return boolean `true` if the block at the specified location is water or lava, `false` otherwise.
+--- ```lua
+--- local isSubmerged = LuaCraft.isLocationSubmerged({ x = 100, y = 64, z = 200 })
+--- if isSubmerged then
+---     print("The location is submerged in water or lava.")
+--- else
+---     print("The location is not submerged.")
+--- end
+--- ```
+function LuaCraft.isLocationSubmerged(position) end
+
+--- Sets a destination path for a mob, causing it to move to the specified location.
+--- @param entityUUID string The UUID of the mob to set the path for.
+--- @param position table A table containing `x`, `y`, and `z` coordinates representing the destination.
+--- @return boolean `true` if the path was successfully set and the mob began moving, `false` otherwise.
+--- ```lua
+--- local success = LuaCraft.setDestinationPath("f9f8e2a4-91b8-4b12-befc-3dc7f2d3b5e9", { x = 100, y = 65, z = 200 })
+--- if success then
+---     print("Mob is moving to the target location.")
+--- else
+---     print("Failed to set destination for the mob.")
+--- end
+--- ```
+function LuaCraft.setDestinationPath(entityUUID, position) end
+
+--- Stops all mobs currently following paths set using LuaCraft.setDestinationPath and clears their active routes.
+--- @return nil
+--- ```lua
+--- LuaCraft.stopAllPathRoutes()
+--- print("All mob path routes have been stopped.")
+--- ```
+function LuaCraft.stopAllPathRoutes() end
