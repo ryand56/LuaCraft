@@ -62,13 +62,13 @@ end
 
 --- Converts the vec3 object to a string for debugging.
 --- @param v table The vec3 object.
---- @return string A string representation of the vec3.
+--- @return string @A string representation of the vec3.
 function vec3_mt.__tostring(v)
     return string.format("vec3(x = %.2f, y = %.2f, z = %.2f)", v.x, v.y, v.z)
 end
 
 --- Calculates the length (magnitude) of the vec3 vector.
---- @return number The length of the vector.
+--- @return number @The length of the vector.
 function vec3:length()
     return math.sqrt(self.x * self.x + self.y * self.y + self.z * self.z)
 end
@@ -86,7 +86,7 @@ end
 
 --- Dot product of two vec3 vectors.
 --- @param v2 table The second vec3 vector.
---- @return number The resulting dot product.
+--- @return number @The resulting dot product.
 function vec3:dot(v2)
     return self.x * v2.x + self.y * v2.y + self.z * v2.z
 end
