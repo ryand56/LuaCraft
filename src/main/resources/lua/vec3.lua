@@ -9,7 +9,7 @@ local vec3_mt = {}
 --- @param x number The x coordinate.
 --- @param y number The y coordinate.
 --- @param z number The z coordinate.
---- @return table A new vec3 object with x, y, and z coordinates.
+--- @return table @A new vec3 object with x, y, and z coordinates.
 function vec3.new(x, y, z)
     local v = setmetatable({ x = x or 0, y = y or 0, z = z or 0 }, vec3_mt)
     return v
@@ -18,7 +18,7 @@ end
 --- Adds two vec3 vectors.
 --- @param v1 table The first vec3 object.
 --- @param v2 table The second vec3 object.
---- @return table The resulting vec3 after addition.
+--- @return table @The resulting vec3 after addition.
 function vec3_mt.__add(v1, v2)
     return vec3.new(v1.x + v2.x, v1.y + v2.y, v1.z + v2.z)
 end
@@ -26,7 +26,7 @@ end
 --- Subtracts one vec3 vector from another.
 --- @param v1 table The first vec3 object.
 --- @param v2 table The second vec3 object.
---- @return table The resulting vec3 after subtraction.
+--- @return table @The resulting vec3 after subtraction.
 function vec3_mt.__sub(v1, v2)
     return vec3.new(v1.x - v2.x, v1.y - v2.y, v1.z - v2.z)
 end
@@ -34,7 +34,7 @@ end
 --- Multiplies a vec3 vector by a scalar value or another vec3.
 --- @param v1 table The first vec3 object.
 --- @param v2 number or table The second value (can be a scalar or a vec3 object).
---- @return table The resulting vec3 after multiplication.
+--- @return table @The resulting vec3 after multiplication.
 function vec3_mt.__mul(v1, v2)
     if type(v2) == "number" then
         return vec3.new(v1.x * v2, v1.y * v2, v1.z * v2)
@@ -48,14 +48,14 @@ end
 --- Divides a vec3 vector by a scalar value.
 --- @param v1 table The vec3 object.
 --- @param scalar number The scalar value to divide by.
---- @return table The resulting vec3 after division.
+--- @return table @The resulting vec3 after division.
 function vec3_mt.__div(v1, scalar)
     return vec3.new(v1.x / scalar, v1.y / scalar, v1.z / scalar)
 end
 
 --- Returns the negation of a vec3 vector.
 --- @param v table The vec3 object.
---- @return table The resulting negated vec3.
+--- @return table @The resulting negated vec3.
 function vec3_mt.__unm(v)
     return vec3.new(-v.x, -v.y, -v.z)
 end
@@ -74,7 +74,7 @@ function vec3:length()
 end
 
 --- Normalizes the vec3 vector (makes its length 1).
---- @return table The normalized vec3 vector.
+--- @return table @The normalized vec3 vector.
 function vec3:normalize()
     local len = self:length()
     if len == 0 then
@@ -93,7 +93,7 @@ end
 
 --- Cross product of two vec3 vectors.
 --- @param v2 table The second vec3 vector.
---- @return table The resulting vec3 after the cross product.
+--- @return table @The resulting vec3 after the cross product.
 function vec3:cross(v2)
     return vec3.new(
         self.y * v2.z - self.z * v2.y,
