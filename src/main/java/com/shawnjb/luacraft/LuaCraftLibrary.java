@@ -65,6 +65,10 @@ public class LuaCraftLibrary {
 		table.set("convertAmpersandToSection", new ConvertAmpersandToSection());
 		table.set("broadcastMessage", new BroadcastMessage(plugin));
 
+		// Positional methods
+		table.set("findSafeYLevel", new FindSafeYLevel());
+		table.set("isLocationSubmerged", new IsLocationSubmerged());
+
 		// Command execution
 		table.set("executeCommand", new ExecuteCommand(plugin));
 		table.set("executeCommandAs", new ExecuteCommandAs(plugin));
