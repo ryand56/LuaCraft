@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.luaj.vm2.LuaTable;
 import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.VarArgFunction;
@@ -55,15 +56,20 @@ public class LuaCraftPlayer {
             }
         });
 
-        playerTable.set("setPosition", new VarArgFunction() {
-            @Override
-            public Varargs invoke(Varargs args) {
-                LuaValue vec3Table = args.checktable(1);
-                Vec3 position = Vec3.fromLua(vec3Table);
-                setPosition(position);
-                return LuaValue.NIL;
-            }
-        });
+		playerTable.set("setPosition", new VarArgFunction() {
+			@Override
+			public Varargs invoke(Varargs args) {
+				LuaValue positionTable = args.checktable(1);
+				
+				double x = positionTable.get("x").checkdouble();
+				double y = positionTable.get("y").checkdouble();
+				double z = positionTable.get("z").checkdouble();
+				
+				setPosition(x, y, z);
+				
+				return LuaValue.NIL;
+			}
+		});
 
 		playerTable.set("applyEffect", new VarArgFunction() {
 			@Override
@@ -84,7 +90,24 @@ public class LuaCraftPlayer {
 				clearEffects();
 				return LuaValue.NIL;
 			}
-		});		
+		});
+
+		playerTable.set("explode", new VarArgFunction() {
+            @Override
+            public Varargs invoke(Varargs args) {
+                explode();
+                return LuaValue.NIL;
+            }
+        });
+
+        playerTable.set("ignite", new VarArgFunction() {
+            @Override
+            public Varargs invoke(Varargs args) {
+                int seconds = args.optint(1, 5);
+                ignite(seconds);
+                return LuaValue.NIL;
+            }
+        });
 
         playerTable.set("name", LuaValue.valueOf(player.getName()));
         playerTable.set("uuid", LuaValue.valueOf(player.getUniqueId().toString()));
@@ -121,15 +144,21 @@ public class LuaCraftPlayer {
         player.sendMessage(message);
     }
 
-    public LuaValue getPosition() {
-        Location loc = player.getLocation();
-        Vec3 position = new Vec3(loc.getX(), loc.getY(), loc.getZ());
-        return position.toLua();
-    }
+	public LuaValue getPosition() {
+		Location loc = player.getLocation();
+		
+		LuaTable positionTable = LuaValue.tableOf();
+		positionTable.set("x", LuaValue.valueOf(loc.getX()));
+		positionTable.set("y", LuaValue.valueOf(loc.getY()));
+		positionTable.set("z", LuaValue.valueOf(loc.getZ()));
+		
+		return positionTable;
+	}
 
-    public void setPosition(Vec3 position) {
-        player.teleport(new Location(player.getWorld(), position.x, position.y, position.z));
-    }
+	public void setPosition(double x, double y, double z) {
+		Location newLocation = new Location(player.getWorld(), x, y, z);
+		player.teleport(newLocation);
+	}	
 
     public void giveItem(String itemName, int amount) {
         Material material = Material.getMaterial(itemName.toUpperCase());
@@ -168,6 +197,17 @@ public class LuaCraftPlayer {
 		}
 		player.sendMessage("All effects cleared.");
 	}
+
+    public void explode() {
+        Location loc = player.getLocation();
+        player.getWorld().createExplosion(loc, 4.0F, false, false);
+        player.sendMessage("Boom! You have been exploded.");
+    }
+
+    public void ignite(int seconds) {
+        player.setFireTicks(seconds * 20);
+        player.sendMessage("You are now on fire for " + seconds + " seconds.");
+    }
 
     public void runCommand(String command) {
         Bukkit.dispatchCommand(player, command);
