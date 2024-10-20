@@ -89,7 +89,7 @@ function LuaCraft.getFurthestPlayer(player) end
 
 --- Spawns a new entity at the specified position.
 --- @param entityType string The type of the entity to spawn (e.g., "ZOMBIE", "CREEPER").
---- @param position Vec3 A Vec3 table representing the position where the entity should be spawned.
+--- @param position table A table representing the position where the entity should be spawned.
 --- @return LuaCraftEntity @The newly spawned entity as a LuaCraftEntity object, or nil if spawning failed.
 function LuaCraft.newEntity(entityType, position) end
 

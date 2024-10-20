@@ -22,9 +22,9 @@ local LuaCraftPlayer = {
 	getPosition = function() end,
 
 	--- Teleports the player to the specified coordinates.
-	--- @param position Vec3
+	--- @param position table
 	--- ```lua
-	--- player.setPosition(Vec3.new(100, 64, 100))
+	--- player.setPosition({x = 100, y = 64, z = 100})
 	--- ```
 	setPosition = function(position) end,
 

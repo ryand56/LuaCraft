@@ -11,8 +11,6 @@ import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.VarArgFunction;
 import org.bukkit.Location;
 
-import com.shawnjb.luacraft.utils.Vec3;
-
 public class SetDestinationPath extends VarArgFunction {
     private static final Set<Mob> activeMobs = new HashSet<>();
 
@@ -33,9 +31,12 @@ public class SetDestinationPath extends VarArgFunction {
 
         Mob mob = (Mob) entity;
 
-        LuaValue vec3Table = args.checktable(2);
-        Vec3 destination = Vec3.fromLua(vec3Table);
-        Location targetLocation = new Location(mob.getWorld(), destination.x, destination.y, destination.z);
+        LuaValue positionTable = args.checktable(2);
+        double x = positionTable.get("x").checkdouble();
+        double y = positionTable.get("y").checkdouble();
+        double z = positionTable.get("z").checkdouble();
+
+        Location targetLocation = new Location(mob.getWorld(), x, y, z);
         boolean success = mob.getPathfinder().moveTo(targetLocation);
 
         if (success) {

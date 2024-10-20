@@ -14,8 +14,6 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.Varargs;
 import org.luaj.vm2.lib.VarArgFunction;
 
-import com.shawnjb.luacraft.utils.Vec3;
-
 import java.util.Locale;
 import java.util.UUID;
 

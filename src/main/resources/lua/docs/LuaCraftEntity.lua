@@ -11,9 +11,9 @@ local LuaCraftEntity = {
 	getPosition = function() end,
 
 	--- Teleports the entity to the specified coordinates.
-	--- @param position Vec3
+	--- @param position table
 	--- ```lua
-	--- entity.setPosition(Vec3.new(100, 64, 100))
+	--- entity.setPosition({x = 100, y = 64, z = 100})
 	--- ```
 	setPosition = function(position) end,
 
