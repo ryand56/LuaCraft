@@ -39,29 +39,31 @@ public class LuaCraft extends JavaPlugin {
 			luaCraftFolder.mkdirs();
 			getLogger().info("Created LuaCraft directory at: " + luaCraftFolder.getAbsolutePath());
 		}
-
-		// Initialize Lua globals
+	
 		globals = JsePlatform.standardGlobals();
 		globals.undumper = new Undumper(globals);
-
-		// Initialize LuaCraftLibrary and register autorun scripts
+	
+		File luaDir = new File(getServer().getWorldContainer(), "lua");
+		if (!luaDir.exists()) {
+			luaDir.mkdirs();
+		}
+	
+		String luaPath = luaDir.getAbsolutePath().replace("\\", "/") + "/?.lua";
+		globals.get("package").set("path", globals.get("package").get("path").tojstring() + ";" + luaPath);
+		getLogger().info("Added lua directory to package.path: " + luaPath);
+	
 		LuaCraftLibrary luaCraftLibrary = new LuaCraftLibrary(this);
-		registerAutorunScripts(new File(getServer().getWorldContainer(), "lua"));
-
-		// Register LuaCraft functions
+		registerAutorunScripts(luaDir);
 		luaCraftLibrary.registerLuaFunctions(globals);
-
-		// Register command handlers via LifecycleEventManager
+	
 		LifecycleEventManager<Plugin> manager = this.getLifecycleManager();
 		manager.registerEventHandler(LifecycleEvents.COMMANDS, event -> {
 			var commands = event.registrar();
-
-			// Command: loadscript
+	
 			commands.register(
 					Commands.literal("loadscript")
 							.then(Commands.argument("filename", StringArgumentType.word())
 									.suggests((context, builder) -> {
-										File luaDir = new File(getServer().getWorldContainer(), "lua");
 										if (luaDir.exists() && luaDir.isDirectory()) {
 											for (File file : luaDir.listFiles((dir, name) -> name.endsWith(".lua"))) {
 												String scriptName = file.getName().replace(".lua", "");
@@ -72,24 +74,22 @@ public class LuaCraft extends JavaPlugin {
 									})
 									.executes(this::loadScript))
 							.build());
-
-			// Command: listscripts
+	
 			commands.register(
 					Commands.literal("listscripts")
 							.executes(this::listScripts)
 							.build(),
 					"List all available Lua scripts");
-
-			// Command: loadstring
+	
 			commands.register(
-						Commands.literal("loadstring")
+					Commands.literal("loadstring")
 							.then(Commands.argument("code", StringArgumentType.greedyString())
-								.executes(this::loadString))
+									.executes(this::loadString))
 							.build()
-					);
+			);
 		});
 	}
-
+	
 	private int loadScript(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
 		CommandSourceStack sourceStack = context.getSource();
 		CommandSender sender = sourceStack.getSender();
