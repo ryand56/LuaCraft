@@ -48,9 +48,16 @@ public class LuaCraft extends JavaPlugin {
 			luaDir.mkdirs();
 		}
 	
-		String luaPath = luaDir.getAbsolutePath().replace("\\", "/") + "/?.lua";
-		globals.get("package").set("path", globals.get("package").get("path").tojstring() + ";" + luaPath);
-		getLogger().info("Added lua directory to package.path: " + luaPath);
+		try {
+			String luaPath = luaDir.getCanonicalPath().replace("\\", "/") + "/?.lua";
+			String currentPackagePath = globals.get("package").get("path").tojstring();
+			String newPackagePath = currentPackagePath + ";" + luaPath;
+			globals.get("package").set("path", LuaValue.valueOf(newPackagePath));
+			getLogger().info("Added lua directory to package.path: " + newPackagePath);
+	
+		} catch (IOException e) {
+			getLogger().severe("Failed to resolve lua directory path: " + e.getMessage());
+		}
 	
 		LuaCraftLibrary luaCraftLibrary = new LuaCraftLibrary(this);
 		registerAutorunScripts(luaDir);
