@@ -74,7 +74,6 @@ bin/
 
 # Miscellaneous
 *.swp
-*.lock
 *.tmp
 *.bak
 *.orig
